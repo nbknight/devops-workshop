@@ -1,25 +1,35 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.24.0"
+    }
+  }
+}
+
 provider "aws" {
-  region = "us-east-1"
+    region = "us-east-1"
+    profile = "terraform-personal"
 }
 
 resource "aws_instance" "demo-server" {
-    ami = "ami-022e1a32d3f742bd8"
+    ami = "ami-01bc990364452ab3e"
     instance_type = "t2.micro"
     key_name = "dpp"
-    security_groups = [ "demo-sg" ]
+    security_groups = [ "demo-sg"]
 }
 
-resource "aws_security_group" "demo-sg" {
+resource "aws_security_group" "demo_sg" {
   name        = "demo-sg"
-  description = "SSH Access"
-  
+  description = "Allow SSH access to ec2"
+
   ingress {
-    description      = "Shh access"
+    description      = "SSH Access"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    }
+    cidr_blocks      = [0.0.0.0/0]
+  }
 
   egress {
     from_port        = 0
@@ -30,7 +40,6 @@ resource "aws_security_group" "demo-sg" {
   }
 
   tags = {
-    Name = "ssh-prot"
-
+    Name = "ssh-port"
   }
 }
